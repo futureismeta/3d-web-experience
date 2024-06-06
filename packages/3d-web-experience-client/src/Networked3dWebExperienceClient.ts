@@ -8,13 +8,14 @@ import {
   CollisionsManager,
   Composer,
   decodeCharacterAndCamera,
+  EnvironmentConfiguration,
   getSpawnPositionInsideCircle,
+  GroundPlane,
   KeyInputManager,
+  LoadingScreen,
   MMLCompositionScene,
   TimeManager,
   TweakPane,
-  GroundPlane,
-  LoadingScreen,
   VirtualJoystick,
 } from "@mml-io/3d-web-client-core";
 import { ChatNetworkingClient, FromClientChatMessage, TextChatUI } from "@mml-io/3d-web-text-chat";
@@ -61,7 +62,9 @@ export type Networked3dWebExperienceClientConfig = {
   userNetworkAddress: string;
   mmlDocuments?: Array<MMLDocumentConfiguration>;
   animationConfig: AnimationConfig;
-  hdrJpgUrl: string;
+  environmentConfiguration?: EnvironmentConfiguration;
+  skyboxHdrJpgUrl: string;
+  enableTweakPane?: boolean;
 };
 
 export class Networked3dWebExperienceClient {
@@ -69,7 +72,7 @@ export class Networked3dWebExperienceClient {
 
   private scene = new Scene();
   private composer: Composer;
-  private tweakPane: TweakPane;
+  private tweakPane?: TweakPane;
   private audioListener = new AudioListener();
 
   private cameraManager: CameraManager;
@@ -134,18 +137,26 @@ export class Networked3dWebExperienceClient {
       mouse_support: false,
     });
 
-    this.composer = new Composer(this.scene, this.cameraManager.camera, true);
-    this.composer.useHDRJPG(this.config.hdrJpgUrl);
+    this.composer = new Composer({
+      scene: this.scene,
+      camera: this.cameraManager.camera,
+      spawnSun: true,
+      environmentConfiguration: this.config.environmentConfiguration,
+    });
+
+    this.composer.useHDRJPG(this.config.skyboxHdrJpgUrl);
     this.element.appendChild(this.composer.renderer.domElement);
 
-    this.tweakPane = new TweakPane(
-      this.element,
-      this.composer.renderer,
-      this.scene,
-      this.composer.effectComposer,
-    );
-    this.cameraManager.setupTweakPane(this.tweakPane);
-    this.composer.setupTweakPane(this.tweakPane);
+    if (this.config.enableTweakPane !== false) {
+      this.tweakPane = new TweakPane(
+        this.element,
+        this.composer.renderer,
+        this.scene,
+        this.composer.effectComposer,
+      );
+      this.cameraManager.setupTweakPane(this.tweakPane);
+      this.composer.setupTweakPane(this.tweakPane);
+    }
 
     const resizeObserver = new ResizeObserver(() => {
       this.composer.fitContainer();
@@ -219,9 +230,11 @@ export class Networked3dWebExperienceClient {
     });
     this.scene.add(this.characterManager.group);
 
-    const groundPlane = new GroundPlane();
-    this.collisionsManager.addMeshesGroup(groundPlane);
-    this.scene.add(groundPlane);
+    if (this.config.environmentConfiguration?.groundPlane !== false) {
+      const groundPlane = new GroundPlane();
+      this.collisionsManager.addMeshesGroup(groundPlane);
+      this.scene.add(groundPlane);
+    }
 
     this.setupMMLScene();
 
@@ -382,7 +395,7 @@ export class Networked3dWebExperienceClient {
     this.cameraManager.update();
     this.composer.sun?.updateCharacterPosition(this.characterManager.localCharacter?.position);
     this.composer.render(this.timeManager);
-    if (this.tweakPane.guiVisible) {
+    if (this.tweakPane?.guiVisible) {
       this.tweakPane.updateStats(this.timeManager);
       this.tweakPane.updateCameraData(this.cameraManager);
       if (this.characterManager.localCharacter && this.characterManager.localController) {
