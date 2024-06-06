@@ -18,6 +18,7 @@ import {
   VirtualJoystick,
 } from "@mml-io/3d-web-client-core";
 import { ChatNetworkingClient, FromClientChatMessage, TextChatUI } from "@mml-io/3d-web-text-chat";
+import { UserInterface, UINetworkingClient } from "@mml-io/3d-web-user-interface";
 import {
   UserData,
   UserNetworkingClient,
@@ -55,6 +56,7 @@ type MMLDocumentConfiguration = {
 export type Networked3dWebExperienceClientConfig = {
   sessionToken: string;
   chatNetworkAddress?: string;
+  uiNetworkAddress?: string;
   voiceChatAddress?: string;
   userNetworkAddress: string;
   mmlDocuments?: Array<MMLDocumentConfiguration>;
@@ -91,6 +93,9 @@ export class Networked3dWebExperienceClient {
 
   private networkChat: ChatNetworkingClient | null = null;
   private textChatUI: TextChatUI | null = null;
+
+  private uiNetworkClient: UINetworkingClient | null = null;
+  private userInterface: UserInterface | null = null;
 
   private voiceChatManager: VoiceChatManager | null = null;
   private readonly latestCharacterObject = {
@@ -233,6 +238,7 @@ export class Networked3dWebExperienceClient {
         */
         this.connectToVoiceChat();
         this.connectToTextChat();
+        this.connectUI();
         this.spawnCharacter();
       }
     });
@@ -293,6 +299,36 @@ export class Networked3dWebExperienceClient {
         latestCharacterObj: this.latestCharacterObject,
         autoJoin: false,
       });
+    }
+  }
+
+  private connectUI() {
+    if (this.clientId === null) {
+      return;
+    }
+
+    if (this.userInterface === null && this.config.uiNetworkAddress) {
+      const user = this.userProfiles.get(this.clientId);
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      this.uiNetworkClient = UINetworkingClient.getInstance({
+        url: this.config.uiNetworkAddress,
+        sessionToken: this.config.sessionToken,
+        websocketFactory: (url: string) => new WebSocket(`${url}?id=${this.clientId}`),
+        statusUpdateCallback: (status: WebsocketStatus) => {
+          if (status === WebsocketStatus.Disconnected || status === WebsocketStatus.Reconnecting) {
+            // The connection was lost after being established - the connection may be re-established with a different client ID
+          }
+        }
+      });
+
+      this.userInterface = new UserInterface(
+          this.element,
+          user.username
+      );
+      this.userInterface.init();
     }
   }
 

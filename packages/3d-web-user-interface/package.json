@@ -1,5 +1,5 @@
 {
-  "name": "@mml-io/3d-web-text-chat",
+  "name": "@mml-io/3d-web-user-interface",
   "version": "0.16.0",
   "publishConfig": {
     "access": "public"

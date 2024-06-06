@@ -45,6 +45,7 @@ export type Networked3dWebExperienceServerConfig = {
     documentsUrl: string;
   };
   userAuthenticator: UserAuthenticator;
+  uiNetworkPath?: string;
 };
 
 export class Networked3dWebExperienceServer {

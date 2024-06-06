@@ -68,6 +68,7 @@ export class CharacterManager {
       characterModelLoader: this.config.characterModelLoader,
       characterId: id,
       modelLoadedCallback: () => {
+        console.log("Character loaded")
         // character loaded callback
       },
       cameraManager: this.config.cameraManager,

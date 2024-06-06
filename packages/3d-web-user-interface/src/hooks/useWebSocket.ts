@@ -1,26 +1,25 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
 import UINetworkingClient from "../networking/UINetworkingClient";
 
-const useWebSocketService = (url: string) => {
-  const [data, setData] = useState<any>(null);
-  const webSocketService = UINetworkingClient.getInstance();
+const useUINetworking = () => {
+  const [balance, setBalance] = useState<number | null>(null);
 
-  const subscribeToMessageType = useCallback(
-    (type: string, callback: (data: any) => void) => {
-      webSocketService(type, callback);
-    },
-    [webSocketService],
-  );
+  useEffect(() => {
+    const uiClient = UINetworkingClient.getInstance();
+    console.log('updated balance', balance)
 
-  const sendMessage = useCallback(
-    (message: any) => {
-      webSocketService.sendMessage(message);
-    },
-    [webSocketService],
-  );
+    uiClient.setBalanceUpdateCallback((newBalance: number) => {
+      console.log('updated balance', newBalance);
+      setBalance(newBalance);
+    });
 
-  return { data, sendMessage, subscribeToMessageType, setData };
+    return () => {
+      uiClient.setBalanceUpdateCallback(undefined); // Clean up the callback
+    };
+  }, []);
+
+  return { balance };
 };
 
-export default useWebSocketService;
+export default useUINetworking;

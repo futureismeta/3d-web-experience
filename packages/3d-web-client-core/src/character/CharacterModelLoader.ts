@@ -1,6 +1,5 @@
-import { ModelLoader, ModelLoadResult } from "@mml-io/model-loader";
-import { AnimationClip, Object3D } from "three";
-import { GLTF } from "three/examples/jsm/loaders/GLTFLoader.js";
+import {ModelLoader, ModelLoadResult} from "@mml-io/model-loader";
+import {AnimationClip, Object3D} from "three";
 
 class LRUCache<K, V> {
   private maxSize: number;
@@ -41,7 +40,7 @@ export class CharacterModelLoader {
 
   constructor(
     maxCacheSize: number = 100,
-    private debug: boolean = false,
+    private debug: boolean = true,
   ) {
     this.modelCache = new LRUCache(maxCacheSize);
   }
@@ -67,6 +66,7 @@ export class CharacterModelLoader {
           return this.loadFromUrl(blobURL, fileType, loadedModel.originalExtension);
         });
 
+      console.log("Loading from server", fileUrl);
       const loadPromise: Promise<CachedModel> = fetch(fileUrl)
         .then((response) => response.blob())
         .then((blob) => {
@@ -75,6 +75,10 @@ export class CharacterModelLoader {
           this.modelCache.set(fileUrl, cached);
           this.ongoingLoads.delete(fileUrl);
           return cached;
+        }).catch((error) => {
+            console.error(`Error loading ${fileUrl}: ${error}`);
+            this.ongoingLoads.delete(fileUrl);
+            return Promise.reject(error);
         });
 
       this.ongoingLoads.set(fileUrl, loadPromise);
