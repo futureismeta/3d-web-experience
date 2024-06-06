@@ -41,7 +41,7 @@ export class CharacterModelLoader {
 
   constructor(
     maxCacheSize: number = 100,
-    private debug: boolean = true,
+    private debug: boolean = false,
   ) {
     this.modelCache = new LRUCache(maxCacheSize);
   }
