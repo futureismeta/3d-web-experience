@@ -24,10 +24,10 @@
     "@mml-io/3d-web-voice-chat": "^0.16.0",
     "@mml-io/3d-web-user-interface": "^0.16.0",
     "mml-web": "^0.15.0",
-    "three": "0.163.0"
+    "three": "0.165.0"
   },
   "devDependencies": {
     "@types/node": "^20.12.7",
-    "@types/three": "0.163.0"
+    "@types/three": "0.165.0"
   }
 }
