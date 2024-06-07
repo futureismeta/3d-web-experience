@@ -19,8 +19,7 @@
     "version": "lerna version --no-push --force-publish"
   },
   "workspaces": [
-    "packages/*",
-    "example/**"
+    "packages/*"
   ],
   "devDependencies": {
     "@types/jest": "29.5.12",
