@@ -1,3 +1,6 @@
+yarn link @mml-io/3d-web-avatar @mml-io/3d-web-avatar-editor-ui @mml-io/3d-web-client-core @mml-io/3d-web-experience-client @mml-io/3d-web-experience-server @mml-io/3d-web-standalone-avatar-editor @mml-io/3d-web-text-chat @mml-io/3d-web-user-interface @mml-io/3d-web-user-networking @mml-io/3d-web-voice-chat
+
+
 # (MML) 3D Web Experience
 
 This repository contains packages used to run a web-based, multi-user 3D web experience that

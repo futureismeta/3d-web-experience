@@ -1,5 +1,6 @@
 import {ModelLoader, ModelLoadResult} from "@mml-io/model-loader";
 import {AnimationClip, Object3D} from "three";
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 class LRUCache<K, V> {
   private maxSize: number;

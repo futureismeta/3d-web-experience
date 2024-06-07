@@ -88,7 +88,7 @@ export class Composer {
   private resizeListener: () => void;
   public resolution: Vector2 = new Vector2(this.width, this.height);
 
-  private isEnvHDRI: boolean = false;
+  private isEnvHDRI: boolean = true;
 
   private readonly scene: Scene;
   public postPostScene: Scene;

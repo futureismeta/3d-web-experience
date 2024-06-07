@@ -45,6 +45,11 @@ export class UserNetworkingServer {
   private authenticatedClientsById: Map<number, Client> = new Map();
 
   constructor(private options: UserNetworkingServerOptions) {
+    console.log("UserNetworkingServer created");
+    console.log("UserNetworkingServer created");
+    console.log("UserNetworkingServer created");
+    console.log("UserNetworkingServer created");
+    console.log("UserNetworkingServer created");
     setInterval(this.sendUpdates.bind(this), packetsUpdateRate);
     setInterval(this.pingClients.bind(this), pingPongRate);
     setInterval(this.heartBeat.bind(this), heartBeatRate);
