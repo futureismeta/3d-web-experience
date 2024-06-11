@@ -25,7 +25,7 @@
     "@tweakpane/plugin-essentials": "0.2.1",
     "mml-web": "0.15.0",
     "postprocessing": "6.35.4",
-    "three-mesh-bvh": "0.7.4",
+    "three-mesh-bvh": "0.7.5",
     "tweakpane": "4.0.3"
   },
   "peerDependencies": {
