@@ -24,7 +24,7 @@
     "@tweakpane/core": "2.0.3",
     "@tweakpane/plugin-essentials": "0.2.1",
     "mml-web": "0.15.0",
-    "postprocessing": "6.35.4",
+    "postprocessing": "6.35.5",
     "three-mesh-bvh": "0.7.4",
     "tweakpane": "4.0.3"
   },
@@ -32,6 +32,6 @@
     "three": ">= 0.163.0"
   },
   "devDependencies": {
-    "@types/three": "0.163.0"
+    "@types/three": "0.165.0"
   }
 }
