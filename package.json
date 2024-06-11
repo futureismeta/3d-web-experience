@@ -14,8 +14,8 @@
     "test-all": "lerna run --parallel --stream --no-bail test",
     "lint-all": "lerna run --stream --no-bail lint",
     "lint-fix-all": "lerna run --stream --no-bail lint-fix",
-    "link-all": "lerna exec \"npm link\" --no-private && npm run print-links",
-    "print-links": "echo \"Run this command in the package you would like to link this repo's packages to:\n\"; echo \"npm link\" $(lerna ls --loglevel=error)",
+    "link-all": "lerna exec \"yarn link\" --no-private && yarn run print-links",
+    "print-links": "echo \"Run this command in the package you would like to link this repo's packages to:\n\"; echo \"yarn link\" $(lerna ls --loglevel=error)",
     "version": "lerna version --no-push --force-publish"
   },
   "workspaces": [

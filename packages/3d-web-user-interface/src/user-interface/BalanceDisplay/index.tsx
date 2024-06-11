@@ -2,7 +2,6 @@ import useUINetworking from "../../hooks/useWebSocket";
 import MetisIcon from "../../icons/metis.svg";
 
 import styles from "./BalanceDisplay.module.css";
-import {signMessage} from "@wagmi/core";
 
 export const BalanceDisplay = () => {
   const { balance } = useUINetworking();
@@ -10,14 +9,7 @@ export const BalanceDisplay = () => {
   return (
     <div className={styles.userInterface}>
       <div className={styles.balanceWrapper}>
-          <div onClick={() => async () => {
-              await signMessage({
-                  account: {type: 'local'},
-                  connector: {type: 'injected'},
-                  message: 'Hello, world!',
-              });
-
-          }}>Sign Message</div>
+          <div>Sign Message</div>
 
         <img
           src={`data:image/svg+xml;utf8,${encodeURIComponent(MetisIcon)}`}
